@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[AddComponentMenu ("Vistage/Singleton")]
 public class Singleton<T> : MonoBehaviour where T: MonoBehaviour {
 
 	private static T instance;
