@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private ThirdPersonCharacter m_Character;
     private CameraRaycaster cameraRaycaster;
     private Vector3 currentClickTarget;
+    private float walkStopRadius = 0.2f;
 
     private void Awake ()
     {
@@ -34,10 +35,18 @@ public class PlayerMovement : MonoBehaviour
                     break;
                 default:
                     Debug.Log ("PlayerMovement has fallen through switch");
-                    break;
+                    return;
             }
         }
-        m_Character.Move(currentClickTarget - transform.position, false, false);
+        Vector3 playerMoveVector = currentClickTarget - transform.position;
+        if (playerMoveVector.sqrMagnitude >= Mathf.Pow (walkStopRadius, 2))
+        {
+            m_Character.Move(playerMoveVector, false, false);
+        }
+        else
+        {
+            m_Character.Move (Vector3.zero, false, false);
+        }
     }
 }
 
