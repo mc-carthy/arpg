@@ -11,7 +11,6 @@ public class Cursor : MonoBehaviour {
 
     private void Update ()
     {
-        Debug.Log (cameraRaycaster.LayerHit);
     }
 
 }
