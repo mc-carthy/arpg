@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent (typeof (CameraRaycaster))]
 public class CursorAffordance : MonoBehaviour {
 
     [SerializeField]
@@ -9,17 +10,24 @@ public class CursorAffordance : MonoBehaviour {
     [SerializeField]
     private Texture2D questionCursor = null;
     [SerializeField]
-    private Vector2 hotSpot = new Vector2 (96f, 96f);
+    private Vector2 hotSpot = new Vector2 (0f, 0f);
 
 	private CameraRaycaster cameraRaycaster;
 
     private void Awake ()
     {
         cameraRaycaster = GetComponent<CameraRaycaster> ();
+        cameraRaycaster.layerChangeObservers += OnCursorChanged;
     }
 
-    private void Update ()
+    private void Start ()
     {
+
+    }
+
+    private void OnCursorChanged ()
+    {
+        Debug.Log ("Delegate called");
         switch (cameraRaycaster.LayerHit)
         {
             case Layer.Walkable:

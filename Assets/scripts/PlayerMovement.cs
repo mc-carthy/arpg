@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown (KeyCode.G))
         {
             isInDirectMode = !isInDirectMode;
+            currentClickTarget = transform.position;
         }
         if (isInDirectMode)
         {
