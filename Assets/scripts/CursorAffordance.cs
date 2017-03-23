@@ -17,7 +17,7 @@ public class CursorAffordance : MonoBehaviour {
     private void Awake ()
     {
         cameraRaycaster = GetComponent<CameraRaycaster> ();
-        cameraRaycaster.layerChangeObservers += OnCursorChanged;
+        cameraRaycaster.onLayerChange += OnCursorChanged;
     }
 
     private void Start ()
@@ -25,10 +25,9 @@ public class CursorAffordance : MonoBehaviour {
 
     }
 
-    private void OnCursorChanged ()
+    private void OnCursorChanged (Layer newLayer)
     {
-        Debug.Log ("Delegate called");
-        switch (cameraRaycaster.LayerHit)
+        switch (newLayer)
         {
             case Layer.Walkable:
                 Cursor.SetCursor (walkCursor, hotSpot, CursorMode.ForceSoftware);
