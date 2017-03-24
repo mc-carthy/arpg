@@ -23,24 +23,6 @@ public class PlayerMovement : MonoBehaviour
         currentDestination = transform.position;
     }
 
-    // Fixed update is called in sync with physics
-    private void FixedUpdate()
-    {
-        if (Input.GetKeyDown (KeyCode.G))
-        {
-            isInDirectMode = !isInDirectMode;
-            currentDestination = transform.position;
-        }
-        if (isInDirectMode)
-        {
-            ProcessDirectMovement();
-        }
-        else
-        {
-            ProcessMouseClickMovement();
-        }
-    }
-
     private void ProcessDirectMovement ()
     {
         float h = Input.GetAxis("Horizontal");
@@ -54,27 +36,27 @@ public class PlayerMovement : MonoBehaviour
         character.Move (move, false, false);
     }
 
-    private void ProcessMouseClickMovement ()
-    {
-        if (Input.GetMouseButton(0))
-        {
-            clickPoint = cameraRaycaster.Hit.point;
-            switch (cameraRaycaster.LayerHit)
-            {
+    // private void ProcessMouseClickMovement ()
+    // {
+    //     if (Input.GetMouseButton(0))
+    //     {
+    //         clickPoint = cameraRaycaster.Hit.point;
+    //         switch (cameraRaycaster.LayerHit)
+    //         {
                 
-                case Layer.Walkable:
-                    currentDestination = ShortDestination (clickPoint, walkStopRadius);
-                    break;
-                case Layer.Enemy:
-                    currentDestination = ShortDestination (clickPoint, attackStopRadius);
-                    break;
-                default:
-                    Debug.Log ("PlayerMovement has fallen through switch");
-                    return;
-            }
-        }
-        WalkToDestination ();
-    }
+    //             case Layer.Walkable:
+    //                 currentDestination = ShortDestination (clickPoint, walkStopRadius);
+    //                 break;
+    //             case Layer.Enemy:
+    //                 currentDestination = ShortDestination (clickPoint, attackStopRadius);
+    //                 break;
+    //             default:
+    //                 Debug.Log ("PlayerMovement has fallen through switch");
+    //                 return;
+    //         }
+    //     }
+    //     WalkToDestination ();
+    // }
 
     private void WalkToDestination ()
     {

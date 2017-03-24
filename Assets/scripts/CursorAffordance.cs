@@ -11,13 +11,17 @@ public class CursorAffordance : MonoBehaviour {
     private Texture2D questionCursor = null;
     [SerializeField]
     private Vector2 hotSpot = new Vector2 (0f, 0f);
+    [SerializeField]
+    private const int walkableNumber = 8;
+    [SerializeField]
+    private const int enemyNumber = 9;
 
 	private CameraRaycaster cameraRaycaster;
 
     private void Awake ()
     {
         cameraRaycaster = GetComponent<CameraRaycaster> ();
-        cameraRaycaster.onLayerChange += OnCursorChanged;
+        cameraRaycaster.notifyLayerChangeObservers += OnCursorChanged;
     }
 
     private void Start ()
@@ -25,14 +29,14 @@ public class CursorAffordance : MonoBehaviour {
 
     }
 
-    private void OnCursorChanged (Layer newLayer)
+    private void OnCursorChanged (int newLayer)
     {
         switch (newLayer)
         {
-            case Layer.Walkable:
+            case walkableNumber:
                 Cursor.SetCursor (walkCursor, hotSpot, CursorMode.ForceSoftware);
                 break;
-            case Layer.Enemy:
+            case enemyNumber:
                 Cursor.SetCursor (swordCursor, hotSpot, CursorMode.ForceSoftware);
                 break;
             default:
