@@ -15,22 +15,32 @@ public class Enemy : MonoBehaviour, IDamageable {
     private GameObject projectileToUse;
     [SerializeField]
     private GameObject projectileSpawnPoint;
-
+    [SerializeField]
     private float maxHealthPoints = 100f;
-    private float currentHealthPoints = 100f;
+    [SerializeField]
     private float attackRadius = 6f;
-    private float damagePerProjectile = 9f;
-    private float secondsBetweenShots = 0.5f;
+    [SerializeField]
     private float chaseRadius = 10f;
+    [SerializeField]
+    private float damagePerProjectile = 9f;
+    [SerializeField]
+    private float secondsBetweenShots = 0.5f;
+
     private AICharacterControl aiCharacterControl = null;
     private GameObject player = null;
     private Vector3 aimAdjust = new Vector3 (0f, 1f, 0f);
+    private float currentHealthPoints;
     private bool isAttacking = false;
 
     private void Awake ()
     {
         aiCharacterControl = GetComponent<AICharacterControl> ();
         player = GameObject.FindGameObjectWithTag ("Player");
+    }
+
+    private void Start ()
+    {
+        currentHealthPoints = maxHealthPoints;
     }
 
     private void Update ()
