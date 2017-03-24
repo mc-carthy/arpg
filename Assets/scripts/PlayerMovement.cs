@@ -1,11 +1,22 @@
 using UnityEngine;
+using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-[RequireComponent(typeof (ThirdPersonCharacter))]
+[RequireComponent (typeof (ThirdPersonCharacter))]
+[RequireComponent (typeof (NavMeshAgent))]
+[RequireComponent (typeof (AICharacterControl))]
+
 public class PlayerMovement : MonoBehaviour
 {
-    private ThirdPersonCharacter character;
-    private CameraRaycaster cameraRaycaster;
+    [SerializeField]
+    private const int walkableNumber = 8;
+    [SerializeField]
+    private const int enemyNumber = 9;
+
+    private ThirdPersonCharacter character = null;
+    private AICharacterControl aiCharacterControl = null;
+    private CameraRaycaster cameraRaycaster = null;
+    private GameObject walkTarget = null;
     private Vector3 currentDestination;
     private Vector3 clickPoint;
     private float walkStopRadius = 0.2f;
@@ -16,11 +27,14 @@ public class PlayerMovement : MonoBehaviour
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         character = GetComponent<ThirdPersonCharacter>();
+        aiCharacterControl = GetComponent<AICharacterControl> ();
+        walkTarget = new GameObject("walkTarget");
     }
 
     private void Start()
     {
         currentDestination = transform.position;
+        cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
     }
 
     private void ProcessDirectMovement ()
@@ -36,58 +50,24 @@ public class PlayerMovement : MonoBehaviour
         character.Move (move, false, false);
     }
 
-    // private void ProcessMouseClickMovement ()
-    // {
-    //     if (Input.GetMouseButton(0))
-    //     {
-    //         clickPoint = cameraRaycaster.Hit.point;
-    //         switch (cameraRaycaster.LayerHit)
-    //         {
-                
-    //             case Layer.Walkable:
-    //                 currentDestination = ShortDestination (clickPoint, walkStopRadius);
-    //                 break;
-    //             case Layer.Enemy:
-    //                 currentDestination = ShortDestination (clickPoint, attackStopRadius);
-    //                 break;
-    //             default:
-    //                 Debug.Log ("PlayerMovement has fallen through switch");
-    //                 return;
-    //         }
-    //     }
-    //     WalkToDestination ();
-    // }
-
-    private void WalkToDestination ()
+    private void ProcessMouseClick (RaycastHit raycastHit, int layerHit)
     {
-        Vector3 playerMoveVector = currentDestination - transform.position;
-        if (playerMoveVector.sqrMagnitude >= Mathf.Pow (walkStopRadius, 2))
+        switch (layerHit)
         {
-            character.Move(playerMoveVector, false, false);
-        }
-        else
-        {
-            character.Move (Vector3.zero, false, false);
+            case enemyNumber:
+                GameObject enemy = raycastHit.collider.gameObject;
+                aiCharacterControl.SetTarget (enemy.transform);
+                break;
+            case walkableNumber:
+                walkTarget.transform.position = raycastHit.point;
+                aiCharacterControl.SetTarget (walkTarget.transform);
+                break;
+            default:
+                Debug.LogWarning ("Switch fall through, investiage");
+                return;
         }
     }
 
-    private Vector3 ShortDestination (Vector3 destination, float shortening)
-    {
-        Vector3 reductionVector = (destination - transform.position).normalized * shortening;
-        return destination - reductionVector;
-    }
 
-    private void OnDrawGizmos ()
-    {
-        // Draw movement gizmos
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine (transform.position, currentDestination);
-        Gizmos.DrawSphere (currentDestination, 0.2f);
-        Gizmos.DrawSphere (clickPoint, 0.1f);
-
-        // Draw attack sphere
-        Gizmos.color = new Color (255f, 0f, 0f, 0.5f);
-        Gizmos.DrawWireSphere (transform.position, attackStopRadius);
-    }
 }
 
