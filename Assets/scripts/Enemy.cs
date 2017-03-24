@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour, IDamageable {
     private float chaseRadius = 10f;
     private AICharacterControl aiCharacterControl = null;
     private GameObject player = null;
+    private Vector3 aimAdjust = new Vector3 (0f, 1f, 0f);
     private bool isAttacking = false;
 
     private void Awake ()
@@ -66,7 +67,7 @@ public class Enemy : MonoBehaviour, IDamageable {
         GameObject newProjectile = Instantiate (projectileToUse, projectileSpawnPoint.transform.position, Quaternion.identity);
         Projectile projectileComp = newProjectile.GetComponent<Projectile> ();
         projectileComp.damage = damagePerProjectile;
-        Vector3 unitProjToPlayer = (player.transform.position - projectileSpawnPoint.transform.position).normalized;
+        Vector3 unitProjToPlayer = (player.transform.position + aimAdjust - projectileSpawnPoint.transform.position).normalized;
         newProjectile.GetComponent<Rigidbody> ().velocity = unitProjToPlayer * projectileComp.speed;
     }
 
