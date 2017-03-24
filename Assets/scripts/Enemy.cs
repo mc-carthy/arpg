@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
+using System.Collections;
 
 public class Enemy : MonoBehaviour, IDamageable {
 
@@ -19,9 +20,11 @@ public class Enemy : MonoBehaviour, IDamageable {
     private float currentHealthPoints = 100f;
     private float attackRadius = 6f;
     private float damagePerProjectile = 9f;
+    private float secondsBetweenShots = 0.5f;
     private float chaseRadius = 10f;
     private AICharacterControl aiCharacterControl = null;
     private GameObject player = null;
+    private bool isAttacking = false;
 
     private void Awake ()
     {
@@ -41,9 +44,15 @@ public class Enemy : MonoBehaviour, IDamageable {
             aiCharacterControl.SetTarget (transform);
         }
 
-        if (distToPlayerSqr <= Mathf.Pow (attackRadius, 2))
+        if (distToPlayerSqr <= Mathf.Pow (attackRadius, 2) && !isAttacking)
         {
-            FireProjectile ();
+            isAttacking = true;
+            StartCoroutine (FireProjectileRoutine ());
+        }
+        if (distToPlayerSqr > Mathf.Pow (attackRadius, 2))
+        {
+            StopAllCoroutines (); // Refactor to use StopCoroutine (FireProjectileRoutine ())
+            isAttacking = false;
         }
     }
 
@@ -59,7 +68,13 @@ public class Enemy : MonoBehaviour, IDamageable {
         projectileComp.damage = damagePerProjectile;
         Vector3 unitProjToPlayer = (player.transform.position - projectileSpawnPoint.transform.position).normalized;
         newProjectile.GetComponent<Rigidbody> ().velocity = unitProjToPlayer * projectileComp.speed;
+    }
 
+    private IEnumerator FireProjectileRoutine ()
+    {
+        FireProjectile();
+        yield return new WaitForSeconds (secondsBetweenShots);
+        StartCoroutine (FireProjectileRoutine ());
     }
 
     private void OnDrawGizmos ()
