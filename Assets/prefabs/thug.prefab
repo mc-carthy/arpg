@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 114049386185932726}
   - component: {fileID: 114490185177832004}
   m_Layer: 9
-  m_Name: bruiser
+  m_Name: thug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2690,7 +2690,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 434acdc331d714abfac7ec6a216ef939, type: 2}
+  - {fileID: 2100000, guid: c64f4d79383784f3da0b15661755074f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
