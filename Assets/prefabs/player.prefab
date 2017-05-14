@@ -316,7 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4903221105305456}
   m_Layer: 0
-  m_Name: Dirt Old Hoe
+  m_Name: Dirty Old Hoe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -697,15 +697,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1836536924828758}
-  m_LocalRotation: {x: 0.6142347, y: 0.0000001769513, z: -0.00000003166497, w: 0.7891235}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.7594909, y: -0.09998884, z: -0.63728845, w: 0.08390059}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4442893494776012}
   - {fileID: 4352095688327832}
   m_Father: {fileID: 4221061332971844}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 75.79301, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 80, z: 15}
 --- !u!4 &4988514487850810
 Transform:
   m_ObjectHideFlags: 1
@@ -868,6 +868,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8427ff7c35edb4619b5b54687b220b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealthPoints: 1000
+  meleeRadius: 2
+  damagePerHit: 50
+  timeBetweenHits: 1
 --- !u!114 &114820570393280638
 MonoBehaviour:
   m_ObjectHideFlags: 1

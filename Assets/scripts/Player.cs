@@ -9,14 +9,19 @@ public class Player : MonoBehaviour, IDamageable {
         }
     }
 
+    [SerializeField]
+    private float maxHealthPoints;
+    [SerializeField]
+    private float meleeRadius;
+    [SerializeField]
+    private float damagePerHit;
+    [SerializeField]
+    private float timeBetweenHits;
+
     private CameraRaycaster cameraRaycaster;
     private GameObject currentTarget;
     private int enemyLayer = 9;
-    private float maxHealthPoints = 100f;
-    private float currentHealthPoints = 100f;
-    private float meleeRadius = 2f;
-    private float damagePerHit = 10f;
-    private float timeBetweenHits = 0.5f;
+    private float currentHealthPoints;
     private float lastHitTime = 0f;
 
     private void Awake ()
@@ -27,6 +32,7 @@ public class Player : MonoBehaviour, IDamageable {
     private void Start ()
     {
         cameraRaycaster.notifyMouseClickObservers += OnMouseClicked;
+        currentHealthPoints = maxHealthPoints;
     }
 
     public void TakeDamage (float damage)
